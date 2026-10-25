@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Squeeze — Free Video Compressor &amp; Converter | Aoma AI Agency</title>
+<meta name="description" content="Compress and convert videos free, right in your browser. Your file never leaves your device — no upload, no signup. An Aoma AI Agency free tool.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2338e1ff'/%3E%3Ctext x='32' y='44' font-size='36' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%2306121f'%3EA%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#070b16; --glass:rgba(255,255,255,.06); --line:rgba(255,255,255,.14);
+    --txt:#eef2ff; --dim:#9fb0d8; --neon:#38e1ff; --neon2:#8b5cf6; --good:#34d399; --warn:#fbbf24;
+  }
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+  .orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.5;pointer-events:none;z-index:0}
+  .orb.a{width:420px;height:420px;background:#155eef;top:-140px;left:-120px}
+  .orb.b{width:380px;height:380px;background:#7c3aed;bottom:-160px;right:-100px}
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:28px 18px 60px}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:26px}
+  .brand .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--neon),var(--neon2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#06121f;font-size:19px}
+  .brand .name{font-weight:700;letter-spacing:.4px}
+  .brand .name span{color:var(--neon)}
+  h1{font-size:clamp(30px,6vw,44px);line-height:1.08;margin:0 0 10px}
+  h1 .grad{background:linear-gradient(90deg,var(--neon),var(--neon2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--dim);font-size:16px;line-height:1.55;margin:0 0 24px;max-width:56ch}
+  .sub b{color:var(--txt)}
+  .card{background:var(--glass);border:1px solid var(--line);border-radius:18px;padding:20px;backdrop-filter:blur(10px)}
+  #drop{border:1.5px dashed rgba(255,255,255,.3);border-radius:14px;padding:30px 16px;text-align:center;cursor:pointer;transition:.15s}
+  #drop:hover,#drop.over{border-color:var(--neon);background:rgba(56,225,255,.06)}
+  #drop .big{font-size:17px;font-weight:600}
+  #drop .small{color:var(--dim);font-size:13px;margin-top:6px}
+  input[type=file]{display:none}
+  .fileinfo{display:none;margin-top:14px;font-size:14px;color:var(--dim)}
+  .fileinfo b{color:var(--txt)}
+  .presets{display:none;margin-top:20px}
+  .presets h3{margin:0 0 10px;font-size:13px;letter-spacing:1.2px;text-transform:uppercase;color:var(--dim)}
+  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.pgrid{grid-template-columns:1fr}}
+  .preset{border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;background:rgba(255,255,255,.03)}
+  .preset.sel{border-color:var(--neon);background:rgba(56,225,255,.09)}
+  .preset .t{font-weight:700;font-size:15px}
+  .preset .d{color:var(--dim);font-size:13px;margin-top:3px;line-height:1.45}
+  #go{display:none;width:100%;margin-top:18px;padding:15px;border:0;border-radius:12px;font-size:17px;font-weight:700;color:#06121f;background:linear-gradient(90deg,var(--neon),#5eead4);cursor:pointer}
+  #go:disabled{opacity:.45;cursor:default}
+  .prog{display:none;margin-top:18px}
+  .bar{height:12px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+  .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--neon),var(--neon2));transition:width .2s}
+  .pstat{font-size:13px;color:var(--dim);margin-top:8px;text-align:center}
+  .result{display:none;margin-top:20px;text-align:center}
+  .result .nums{font-size:15px;color:var(--dim);margin:8px 0 4px}
+  .result .nums b{color:var(--txt)}
+  .result .save{font-size:22px;font-weight:800;color:var(--good)}
+  .result video{width:100%;max-height:340px;border-radius:12px;margin-top:12px;background:#000}
+  #dl{display:inline-block;margin-top:14px;padding:14px 26px;border-radius:12px;background:var(--good);color:#04150d;font-weight:800;text-decoration:none;font-size:16px}
+  #again{display:inline-block;margin-top:12px;color:var(--neon);font-size:14px;cursor:pointer;text-decoration:underline}
+  .err{display:none;margin-top:14px;color:#fda4af;font-size:14px;line-height:1.5}
+  .notes{margin-top:22px;font-size:13px;color:var(--dim);line-height:1.6}
+  .cta{margin-top:26px;text-align:center;background:linear-gradient(135deg,rgba(56,225,255,.12),rgba(139,92,246,.12));border:1px solid var(--line);border-radius:18px;padding:22px}
+  .cta .h{font-size:19px;font-weight:800;margin-bottom:6px}
+  .cta p{color:var(--dim);margin:0 0 14px;font-size:14px;line-height:1.55}
+  .cta a{display:inline-block;padding:13px 24px;border-radius:12px;background:linear-gradient(90deg,var(--neon),var(--neon2));color:#fff;font-weight:700;text-decoration:none}
+  footer{margin-top:30px;font-size:12.5px;color:var(--dim);line-height:1.7;text-align:center}
+  footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="orb a"></div><div class="orb b"></div>
+<div class="wrap">
+  <div class="brand"><div class="mark">A</div><div class="name">AOMA <span>AI AGENCY</span> · FREE TOOLS DESK</div></div>
+
+  <h1>Video <span class="grad">Squeeze</span></h1>
+  <p class="sub">Compress and convert videos <b>right in your browser</b>. Your file is never uploaded — the work happens on your own device. No signup, no watermark, no catch.</p>
+
+  <div class="card">
+    <div id="drop">
+      <div class="big">📹 Tap to choose a video, or drop it here</div>
+      <div class="small">MP4, MOV, WebM and more · works best under ~200 MB · stays 100% on your device</div>
+    </div>
+    <input type="file" id="file" accept="video/*">
+    <div class="fileinfo" id="fileinfo"></div>
+
+    <div class="presets" id="presets">
+      <h3>Aoma presets — pick the job</h3>
+      <div class="pgrid">
+        <div class="preset sel" data-p="send">
+          <div class="t">📤 Send Anywhere</div>
+          <div class="d">Shrinks it under 16 MB so it fits WhatsApp, email and social uploads that reject big files.</div>
+        </div>
+        <div class="preset" data-p="vertical">
+          <div class="t">📱 Reels · TikTok · Shorts</div>
+          <div class="d">Turns it vertical 1080×1920, ready to post — clean quality, sensible file size.</div>
+        </div>
+        <div class="preset" data-p="lighter">
+          <div class="t">🎞️ Same Look, Smaller File</div>
+          <div class="d">Keeps the picture, drops the weight. Smart compression at the original size.</div>
+        </div>
+        <div class="preset" data-p="webm">
+          <div class="t">🌐 Convert to WebM</div>
+          <div class="d">The web-native format — smaller files for websites and landing pages.</div>
+        </div>
+      </div>
+    </div>
+
+    <button id="go">Squeeze it</button>
+
+    <div class="prog" id="prog">
+      <div class="bar"><i id="bar"></i></div>
+      <div class="pstat" id="pstat">Loading the video engine… (first visit only)</div>
+    </div>
+
+    <div class="err" id="err"></div>
+
+    <div class="result" id="result">
+      <div class="save" id="save"></div>
+      <div class="nums" id="nums"></div>
+      <video id="preview" controls playsinline></video>
+      <br><a id="dl" href="#" download>⬇ Download your video</a>
+      <br><span id="again">Squeeze another video</span>
+    </div>
+  </div>
+
+  <p class="notes">🔒 <b style="color:var(--txt)">Private by design:</b> this tool runs entirely on your device using open-source technology — nothing is sent to a server, so there is nothing to leak, sell or store. The ~30 MB engine loads from this site once, then it's cached in your browser — after that it's instant, even offline.</p>
+
+  <div class="cta">
+    <div class="h">This is what AI leverage feels like</div>
+    <p>One free tool just saved you a upload-and-wait service. Aoma builds this kind of advantage into small businesses — more calls, more bookings, less busywork.</p>
+    <a href="https://aomaai.com/">Take the free Visibility Check →</a>
+  </div>
+
+  <footer>
+    Engine: <a href="https://ffmpeg.org" target="_blank" rel="noopener">FFmpeg</a> via <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (open source).<br>
+    Aoma's layer: the presets, the interface, and the privacy-first in-browser design. © AARMAJ LLC · Aoma AI Agency · (609) 745-1580
+  </footer>
+</div>
+
+<script type="module">
+import { FFmpeg } from './vendor/ffmpeg/index.js';
+import { fetchFile } from './vendor/util/index.js';
+
+const $ = id => document.getElementById(id);
+const drop=$('drop'), fileIn=$('file'), info=$('fileinfo'), presets=$('presets'),
+      go=$('go'), prog=$('prog'), bar=$('bar'), pstat=$('pstat'),
+      result=$('result'), err=$('err');
+
+let file=null, duration=0, preset='send', ffmpeg=null, loaded=false, revealed=false;
+
+drop.addEventListener('click', ()=>fileIn.click());
+drop.addEventListener('dragover', e=>{e.preventDefault();drop.classList.add('over')});
+drop.addEventListener('dragleave', ()=>drop.classList.remove('over'));
+drop.addEventListener('drop', e=>{e.preventDefault();drop.classList.remove('over'); if(e.dataTransfer.files.length) setFile(e.dataTransfer.files[0]);});
+fileIn.addEventListener('change', ()=>{ if(fileIn.files.length) setFile(fileIn.files[0]); });
+
+document.querySelectorAll('.preset').forEach(p=>p.addEventListener('click', ()=>{
+  document.querySelectorAll('.preset').forEach(x=>x.classList.remove('sel'));
+  p.classList.add('sel'); preset=p.dataset.p;
+}));
+
+function fmtMB(b){ return (b/1048576).toFixed(1)+' MB'; }
+
+function setFile(f){
+  file=f; err.style.display='none'; result.style.display='none';
+  const reveal=()=>{
+    if(revealed) return; revealed=true;
+    info.innerHTML=`<b>${f.name}</b> · ${fmtMB(f.size)}${duration?` · ${duration.toFixed(0)}s`:''}`;
+    info.style.display='block'; presets.style.display='block'; go.style.display='block';
+  };
+  const url=URL.createObjectURL(f);
+  const v=document.createElement('video');
+  v.preload='metadata'; v.src=url;
+  v.onloadedmetadata=()=>{ duration=v.duration||0; URL.revokeObjectURL(url); reveal(); };
+  v.onerror=()=>{ duration=0; URL.revokeObjectURL(url); reveal(); };
+  setTimeout(reveal, 2500);
+}
+
+async function loadEngine(){
+  if(loaded) return;
+  ffmpeg=new FFmpeg();
+  ffmpeg.on('progress', ({progress})=>{
+    const pct=Math.min(100, Math.round(progress*100));
+    bar.style.width=pct+'%'; pstat.textContent=`Working… ${pct}% — keep this tab open`;
+  });
+  await ffmpeg.load({
+    coreURL: new URL('./vendor/core/ffmpeg-core.js', window.location.href).href,
+    wasmURL: new URL('./vendor/core/ffmpeg-core.wasm', window.location.href).href
+  });
+  loaded=true;
+}
+
+function buildArgs(){
+  const ext = preset==='webm' ? 'webm' : 'mp4';
+  const out='output.'+ext;
+  let args=['-i','input'];
+  if(preset==='send'){
+    const targetBytes=15.5*1048576;
+    const dur=Math.max(duration,1);
+    const audioBps=96*1000;
+    let videoBps=Math.floor((targetBytes*8 - audioBps*dur)/dur);
+    const inputBps = duration>0 ? (file.size*8)/duration : Infinity;
+    videoBps=Math.min(videoBps, Math.floor(inputBps*0.85));
+    videoBps=Math.max(videoBps, 150*1000);
+    args.push('-vf','scale=min(1280\\,iw):-2','-c:v','libx264','-preset','veryfast',
+      '-b:v', String(videoBps), '-maxrate', String(Math.floor(videoBps*1.2)),
+      '-c:a','aac','-b:a','96k','-movflags','+faststart', out);
+  } else if(preset==='vertical'){
+    args.push('-vf','scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:black',
+      '-c:v','libx264','-preset','veryfast','-crf','26','-c:a','aac','-b:a','128k','-movflags','+faststart', out);
+  } else if(preset==='lighter'){
+    args.push('-vf','scale=min(1920\\,iw):-2','-c:v','libx264','-preset','veryfast','-crf','28',
+      '-c:a','aac','-b:a','128k','-movflags','+faststart', out);
+  } else if(preset==='webm'){
+    args.push('-vf','scale=min(1280\\,iw):-2','-c:v','libvpx-vp9','-b:v','0','-crf','34',
+      '-c:a','libopus','-b:a','96k', out);
+  }
+  return {args, out};
+}
+
+go.addEventListener('click', async ()=>{
+  if(!file) return;
+  err.style.display='none'; result.style.display='none';
+  go.disabled=true; prog.style.display='block'; bar.style.width='0%';
+  pstat.textContent='Loading the video engine… (first visit only)';
+  try{
+    await loadEngine();
+    pstat.textContent='Working… 0% — keep this tab open';
+    await ffmpeg.writeFile('input', await fetchFile(file));
+    const {args, out} = buildArgs();
+    const code = await ffmpeg.exec(args);
+    if(code!==0) throw new Error('conversion failed');
+    const data = await ffmpeg.readFile(out);
+    const type = out.endsWith('webm') ? 'video/webm' : 'video/mp4';
+    const blob = new Blob([data.buffer], {type});
+    const url = URL.createObjectURL(blob);
+    const baseName = file.name.replace(/\.[^.]+$/,'');
+    $('dl').href=url; $('dl').download = baseName+'-squeezed.'+out.split('.')[1];
+    $('preview').src=url;
+    const saved = Math.max(0, Math.round((1 - blob.size/file.size)*100));
+    $('save').textContent = blob.size < file.size ? `${saved}% smaller` : 'Converted ✓';
+    $('nums').innerHTML = `<b>${fmtMB(file.size)}</b> → <b>${fmtMB(blob.size)}</b>`;
+    result.style.display='block';
+  }catch(e){
+    err.textContent='Something went wrong with that file. Very large or unusual videos can exceed what a browser can process — try a shorter clip, or the "Same Look, Smaller File" preset.';
+    err.style.display='block';
+  }finally{
+    prog.style.display='none'; go.disabled=false;
+  }
+});
+
+$('again').addEventListener('click', ()=>{
+  result.style.display='none'; file=null; revealed=false; fileIn.value='';
+  info.style.display='none'; presets.style.display='none'; go.style.display='none';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+</script>
+</body>
+</html>
