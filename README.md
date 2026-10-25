@@ -42,7 +42,7 @@ Driven end-to-end in headless Chromium at iPhone size (390×844) before first de
 
 - Send Anywhere preset: 0.3 MB test clip → smaller output, correct % readout, downloadable blob ✔
 - Vertical preset: scale+pad filter chain executes clean ✔
-- WebM preset: VP9 encode confirmed working but slow in-browser (expected for single-thread WASM) — see timing note below
+- WebM preset: 0.3 MB → 0.2 MB output ✔ (VP9 in single-thread WASM took ~2 minutes for a 3-second clip — works, but set expectations: short clips only)
 - No horizontal overflow at 390 px; zero console errors ✔
 - Metadata-failure fallback: if a browser can't read the file's duration, the UI still proceeds ✔
 
