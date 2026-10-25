@@ -32,9 +32,7 @@ No build step. The engine (`vendor/core/ffmpeg-core.wasm`, ~31 MB) is self-hoste
 
 ## Deploy
 
-Static hosting (Vercel project connected to this repo). The app is a single page plus `vendor/`; no environment variables, no server code.
-
-Planned live home: a page under aomaai.com's Free Tools Desk (tools hub) — final URL recorded here once live.
+Static hosting via GitHub Pages from this repo. **Live: https://aarmajus.github.io/aoma-video-squeeze/** (page 200, engine wasm served as `application/wasm`; a custom aomaai.com tools-desk URL can point here later).
 
 ## Verification (2026-10-25)
 
